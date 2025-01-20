@@ -68,3 +68,68 @@ This endpoint is used to register a new user.
 
 - The `lastname` field is optional.
 - The `password` field will be hashed before storing in the database.
+
+# User Profile Endpoint
+
+## GET /users/profile
+
+This endpoint is used to get the profile of an authenticated user.
+
+### Request
+
+- Method: GET
+- URL: `/users/profile`
+- Headers: `Authorization: Bearer <token>`
+
+### Response
+
+- Success: 
+  - Status Code: `200 OK`
+  - Body:
+    ```json
+    {
+      "id": "12345",
+      "firstname": "John",
+      "lastname": "Doe",
+      "email": "john.doe@example.com"
+    }
+    ```
+- Unauthorized:
+  - Status Code: `401 Unauthorized`
+  - Body:
+    ```json
+    {
+      "message": "Unauthorized"
+    }
+    ```
+
+# User Logout Endpoint
+
+## POST /users/logout
+
+This endpoint is used to log out an authenticated user.
+
+### Request
+
+- Method: POST
+- URL: `/users/logout`
+- Headers: `Authorization: Bearer <token>`
+
+### Response
+
+- Success: 
+  - Status Code: `200 OK`
+  - Body:
+    ```json
+    {
+      "message": "Logged out successfully"
+    }
+    ```
+- Unauthorized:
+  - Status Code: `401 Unauthorized`
+  - Body:
+    ```json
+    {
+      "message": "Unauthorized"
+    }
+    ```
