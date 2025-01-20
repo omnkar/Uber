@@ -69,6 +69,109 @@ This endpoint is used to register a new user.
 - The `lastname` field is optional.
 - The `password` field will be hashed before storing in the database.
 
+# Captain Registration Endpoint
+
+## POST /captains/register
+
+This endpoint is used to register a new captain.
+
+### Request
+
+- Method: POST
+- URL: `/captains/register`
+- Headers: `Content-Type: application/json`
+- Body:
+  ```json
+  {
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "john.doe@example.com",
+    "password": "yourpassword",
+    "vehicle": {
+      "color": "red",
+      "plate": "ABC123",
+      "capacity": 4,
+      "vehicleType": "car"
+    }
+  }
+  ```
+
+### Response
+
+- Success: 
+  - Status Code: `201 Created`
+  - Body:
+    ```json
+    {
+      "token": "jwt_token",
+      "captain": {
+        "_id": "captain_id",
+        "fullname": {
+          "firstname": "John",
+          "lastname": "Doe"
+        },
+        "email": "john.doe@example.com",
+        "vehicle": {
+          "color": "red",
+          "plate": "ABC123",
+          "capacity": 4,
+          "vehicleType": "car"
+        }
+      }
+    }
+    ```
+- Validation Error:
+  - Status Code: `400 Bad Request`
+  - Body:
+    ```json
+    {
+      "errors": [
+        {
+          "msg": "First name is required",
+          "param": "fullname.firstname",
+          "location": "body"
+        },
+        {
+          "msg": "Enter a valid email",
+          "param": "email",
+          "location": "body"
+        },
+        {
+          "msg": "Password must be at least 5 characters long",
+          "param": "password",
+          "location": "body"
+        },
+        {
+          "msg": "Color is required",
+          "param": "vehicle.color",
+          "location": "body"
+        },
+        {
+          "msg": "Plate is required",
+          "param": "vehicle.plate",
+          "location": "body"
+        },
+        {
+          "msg": "Capacity must be a number",
+          "param": "vehicle.capacity",
+          "location": "body"
+        },
+        {
+          "msg": "Vehicle type must be car, motorcycle, or auto",
+          "param": "vehicle.vehicleType",
+          "location": "body"
+        }
+      ]
+    }
+    ```
+
+### Notes
+
+- The `lastname` field is optional.
+- The `password` field will be hashed before storing in the database.
+
 # User Profile Endpoint
 
 ## GET /users/profile

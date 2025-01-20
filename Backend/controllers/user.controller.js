@@ -10,6 +10,10 @@ module.exports.registerUser = async (req, res, next) => {
     }
 
     const { fullname, email, password } = req.body;
+    const isUserExist=await userModel.findOne({email});
+    if(isUserExist){
+        return res.status(400).json({message:'User already exists'});
+    }
     const hashedPassword = await userModel.hashPassword(password);
     const user = await userService.createUser({
         firstname: fullname.firstname,
@@ -45,43 +49,12 @@ module.exports.loginUser = async (req, res, next) => {
     res.status(200).json({ token, user });
 }
 
-/**
- * @api {get} /users/profile Get User Profile
- * @apiName GetUserProfile
- * @apiGroup User
- * @apiPermission authenticated user
- *
- * @apiSuccess {Object} user User profile information.
- * @apiSuccessExample {json} Success-Response:
- *     HTTP/1.1 200 OK
- *     {
- *       "id": "12345",
- *       "firstname": "John",
- *       "lastname": "Doe",
- *       "email": "john.doe@example.com"
- *     }
- *
- * @apiError 401 Unauthorized
- */
+
 module.exports.getUserProfile = async (req, res, next) => {
     res.status(200).json(req.user);
 }
 
-/**
- * @api {post} /users/logout Logout User
- * @apiName LogoutUser
- * @apiGroup User
- * @apiPermission authenticated user
- *
- * @apiSuccess {String} message Logout success message.
- * @apiSuccessExample {json} Success-Response:
- *     HTTP/1.1 200 OK
- *     {
- *       "message": "Logged out successfully"
- *     }
- *
- * @apiError 401 Unauthorized
- */
+
 module.exports.logoutUser = async (req, res, next) => {
     res.clearCookie('token');
     const token=req.cookies.token || req.headers.authorization.split(' ')[1];
