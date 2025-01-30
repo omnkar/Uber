@@ -1,27 +1,56 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link,useNavigate } from "react-router-dom";
+import { useState,useContext } from "react";
+import { CaptainDataContext } from "../context/CaptainContext";
+import axios from "axios";
+
 const CaptainSignup = () => {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [userData, setUserData] = useState({});
-  const submitHandler = (e) => {
+  const navigate=useNavigate();
+  const {captain,setCaptain}=useContext(CaptainDataContext);
+
+  const [vehicleColor, setVehicleColor] = useState("");
+  const [vehiclePlate, setVehiclePlate] = useState("");
+  const [vehicleCapacity, setVehicleCapacity] = useState("");
+  const [vehicleType, setVehicleType] = useState("");
+  const submitHandler = async(e) => {
     e.preventDefault();
-    setUserData({
-      fullname: {
-        firstname: firstName,
-        lastname: lastName,
-      },
-      email: email,
-      password: pass,
-    });
+   const captainData={
+    fullname:{
+      firstname:firstName,
+      lastname:lastName
+    },
+    email:email,
+    password:pass,
+    vehicle:{
+      color:vehicleColor,
+      plate:vehiclePlate,
+      capacity:vehicleCapacity,
+      vehicleType:vehicleType
+    }
+   }
+   const response=await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/register`,captainData);
+
+   if(response.status === 201){
+    const data=response.data;
+
+    setCaptain(data.captain);
+    localStorage.setItem("token",JSON.stringify(data.token));
+    navigate("/captainhome");
+  }
 
     setEmail("");
     setPass("");
     setFirstName("");
     setLastName("");
+    setVehicleCapacity("");
+    setVehicleColor("");
+    setVehiclePlate("");
+    setVehicleType("");
   };
   return (
     <div className="px-7 py-7 flex-col justify-between h-screen">
@@ -69,8 +98,48 @@ const CaptainSignup = () => {
             onChange={(e) => setPass(e.target.value)}
             placeholder="password"
           />
+          <h3 className="text-lg font-medium mb-2">Vehicle Information</h3>
+          <div className="flex gap-3 mb-5">
+            <input
+              className="bg-[#EEEEEE] border-none w-1/2 rounded px-4 py-2 border text-lg placeholder:text-base"
+              type="text"
+              required
+              value={vehicleColor}
+              onChange={(e) => setVehicleColor(e.target.value)}
+              placeholder="Vehicle Color"
+            />
+            <input
+              className="bg-[#EEEEEE] border-none w-1/2 rounded px-4 py-2 border text-lg placeholder:text-base"
+              type="text"
+              required
+              value={vehiclePlate}
+              onChange={(e) => setVehiclePlate(e.target.value)}
+              placeholder="Vehicle Plate"
+            />
+          </div>
+          <div className="flex gap-3 mb-5">
+            <input
+              className="bg-[#EEEEEE] border-none w-1/2 rounded px-4 py-2 border text-lg placeholder:text-base"
+              type="text"
+              required
+              value={vehicleCapacity}
+              onChange={(e) => setVehicleCapacity(e.target.value)}
+              placeholder="Vehicle Capacity"
+            />
+            <select
+              className="bg-[#EEEEEE] border-none w-1/2 rounded px-4 py-2 border text-lg placeholder:text-base"
+              required
+              value={vehicleType}
+              onChange={(e) => setVehicleType(e.target.value)}
+            >
+              <option value="" disabled>Select Vehicle Type</option>
+              <option value="car">Car</option>
+              <option value="auto">Auto</option>
+              <option value="moto">Moto</option>
+            </select>
+          </div>
           <button className="bg-[#111] mb-3 rounded px-4 py-2  border w-full text-lg  text-white font-semibold">
-            Sign up
+            Create Captain Account
           </button>
           <p className="text-center">
             Already have a account?
