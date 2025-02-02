@@ -96,7 +96,7 @@ const Home = () => {
   );
   useGSAP(
     function () {
-      if (waitingForDriverRef) {
+      if (waitingForDriver) {
         gsap.to(waitingForDriverRef.current, {
           transform: "translateY(0)",
         });

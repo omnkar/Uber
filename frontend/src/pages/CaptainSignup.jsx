@@ -150,7 +150,7 @@ const CaptainSignup = () => {
         </form>
       </div>
       <div>
-        <p className="text-[10px] text-center leading-tight mt-10 p-3">
+        <p className="text-[10px] text-center leading-tight mt-8 p-3">
           This site is protected by reCAPTCHA and <span className="underline">Google Policy</span> and <span className="underline">Terms of
           Service apply.</span>
         </p>
