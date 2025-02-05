@@ -11,7 +11,8 @@ const userRoutes=require('./Routes/user.routes');
 const  loginUser=require('./Routes/user.routes');
 const  userProfile=require('./Routes/user.routes');
 const captainRoutes=require('./Routes/captain.routes');
-
+const mapsRoutes=require("./Routes/maps.routes");
+const rideRoutes=require("./Routes/ride.routes");
 connectTodb();
 app.use(cors());
 app.use(express.json());
@@ -30,5 +31,6 @@ app.use("/login",loginUser);
 app.use("/profile",userProfile)
 
 app.use("/captains",captainRoutes);
-
+app.use("/maps",mapsRoutes);
+app.use("/rides",rideRoutes);
 module.exports=app;
